@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Orange Card Orders</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:href="@{/styles/main.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+    <h2>Card Payments</h2>
+    <table>
+        <tr>
+            <td><h4>Revenue: </h4></td>
+            <td><h4 th:text="${revenue}"></h4></td>
+        </tr>
+        <tr>
+            <td><h4>Total Value Of All Transactions: </h4></td>
+            <td><h4 th:text="${transactionsTotal}"></h4></td>
+        </tr>
+        <tr>
+            <td><h4>Cash Paid To Providers: </h4></td>
+            <td><h4 th:text="${providersFees}"></h4></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
