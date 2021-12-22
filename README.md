@@ -15,7 +15,7 @@
   ** http:\\localhost:8080\getpayments
 
 
-####1.3 Build and run the application in your local  machine
+#### 1.3 Build and run the application in your local  machine
 
 Open the terminal and run the following scripts:
 
@@ -26,7 +26,7 @@ Open the terminal and run the following scripts:
   ** http:\\localhost:8080\getproviders
   ** http:\\localhost:8080\getpayments
 
-####1.4 Test code using Postman
+#### 1.4 Test code using Postman
 
 Open the terminal and run the following scripts:
 
