@@ -4,7 +4,6 @@ import com.orange.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,30 +42,6 @@ public class ProviderResultsServiceImpl implements ProviderResultService {
         providerResultList.add(new ProviderResult(Provider.QuickPay,sumQuickPayFee,sumQuickPay));
         providerResultList.add(new ProviderResult(Provider.PayMasters,sumPayMastersFee,sumPayMasters));
         providerResultList.add(new ProviderResult(Provider.HoutPay,sumHoutPayFee,sumHoutPay));
-
-
-
-        /*double sumLeastProviderFee = providerResultServiceImpl.getProviderResults().stream().filter(o -> o.getStatus().equals(TransactionStatus.Success)).mapToDouble(TransactionResult::getTransactionFee).sum();
-
-        totalValueOfAllTransactions  = providerResultServiceImpl.getProviderResults().stream().count();
-
-        for( TransactionResult transactionResult : providerResultServiceImpl.getProviderResults()){
-            if( transactionResult.getStatus() == TransactionStatus.Success){
-               generatedRevenue = generatedRevenue +  transactionResult.getTransaction().getTransactionAmount();
-            }
-        }
-
-        // Add the dollar sigh in the totals
-        zarLocale = new Locale("EN","US");
-        zarFormat = NumberFormat.getCurrencyInstance(zarLocale);
-        generatedRevenue = generatedRevenue * 0.045;
-
-        log.info("The formated generated revenue is : " + zarFormat.format(generatedRevenue));
-        providerResult.getProvider((String.format("%d",totalValueOfAllTransactions));
-        orangePayment.setGeneratedRevenue(zarFormat.format(generatedRevenue)); //Orange flat fee for all card transactions
-        orangePayment.setCashPaidToProviders(zarFormat.format(sumLeastProviderFee));
-
-        */
 
         return providerResultList;
     }

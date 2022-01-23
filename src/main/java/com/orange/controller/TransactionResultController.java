@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-//mark class as Controller
 
-@Controller
 @RestController
 public class TransactionResultController {
 
@@ -26,12 +24,6 @@ public class TransactionResultController {
         model.addObject("transactionResultsLists", transactionResultsList);
         model.setViewName("transactionresult_list");
         return model;
-    }
-
-    //Postman testing
-    @GetMapping(value = "/orders")
-    public List<TransactionResult> getProviderResults() {
-        return transactionResultsService.getTransactionResults();
     }
 
 }
