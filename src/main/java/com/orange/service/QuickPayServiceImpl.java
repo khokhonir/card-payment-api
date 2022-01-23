@@ -8,73 +8,38 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class QuickPayServiceImpl implements PaymentProviderService {
-    private static final Provider name = Provider.QuickPay;
-    private static final double flatRate = 0.03;
+public class QuickPayServiceImpl implements PaymentProcessorService {
+
     private static final double feePerc1 = 0.025;
     private static final double feePerc2 = 0.04;
-    private double fee = 0.00;
-    private int totalTransactionValue = 0;
-    private double totalFee = 0;
-
-    @Autowired
-    ConvertTransactionFeeServiceImplToRands convertTransactionFeeServiceImplToRands;
-
+    private static final double feePerc3 = 0.03;
+    private double providerFee = 0.00;
 
     @Override
-    public double calculateFee(Transaction transaction) {
+    public double calculateTransactionFee(Transaction transaction) {
+        providerFee = 0.00;
 
-        if (!transaction.getCountry().equals(Country.southAfrica())){
-
-            fee = transaction.getTransactionAmount();
-
-            //Convert the fee to Rands
-            log.debug("2(a) Transaction before conversion : Provider {}, Country {}, Fee {} " , Provider.QuickPay.name() , transaction.getCountry() ,transaction.getTransactionAmount());
-            fee = convertTransactionFeeServiceImplToRands.convertCurrency(transaction.getCountry().getCountryCode(), fee);
-            log.debug("2(b) Transaction   after conversion : Provider {}, Country {}, Fee {} " , Provider.QuickPay.name() , transaction.getCountry() ,transaction.getTransactionAmount());
+        log.info("Transaction Amount : {} , Transaction Country : {} , Provider Name : {}, Provider Fee : {} " , transaction.getTransactionAmount(),transaction.getCountry().getName(), Provider.SurePay ,providerFee);
 
 
-            if (transaction.getCardType().equals(CardType.DinersClub) && !transaction.getCountry().equals(Country.india())) {
-                fee =  transaction.getTransactionAmount() * feePerc1 * flatRate ;
-                log.debug("2(c)Transaction 2 after conversion : Provider {}, Country {}, Fee {} " , Provider.QuickPay.name() , transaction.getCountry() ,transaction.getTransactionAmount());
+        if (!transaction.getCountry().getName().equals(Country.southAfrica().getName())) {
 
-                totalFee += fee;
+            if (transaction.getCardType().equals(CardType.DinersClub)) {
+
+                providerFee = transaction.getTransactionAmount() * feePerc1;
+
+                if (transaction.getCountry().getName().equals(Country.india().getName())) {
+                    providerFee = transaction.getTransactionAmount() * feePerc2;
+                }
+            } else {
+                providerFee = transaction.getTransactionAmount() * feePerc3;
             }
-            if (transaction.getCardType().equals(CardType.DinersClub) && transaction.getCountry().equals(Country.india())) {
-                fee =  transaction.getTransactionAmount() * feePerc2 * flatRate;
-                log.debug("2(d) Transaction  3 after conversion : Provider {}, Country {}, Fee {} " , Provider.QuickPay.name() , transaction.getCountry() ,transaction.getTransactionAmount());
-
-                totalFee += fee;
-            }
-
-            if (!transaction.getCardType().equals(CardType.DinersClub) && transaction.getCountry().equals(Country.india())) {
-                fee =  transaction.getTransactionAmount() *  flatRate;
-                log.debug("2(e) Transaction after conversion : Provider {}, Country {}, Fee {} " , Provider.QuickPay.name() , transaction.getCountry() ,transaction.getTransactionAmount());
-
-                totalFee += fee;
-            }
-
-            if (!transaction.getCardType().equals(CardType.DinersClub) && !transaction.getCountry().equals(Country.india())) {
-                fee =  transaction.getTransactionAmount() *  flatRate;
-                log.debug("2(f) Transaction after conversion : Provider {}, Country {}, Fee {} " , Provider.QuickPay.name() , transaction.getCountry() ,transaction.getTransactionAmount());
-
-                totalFee += fee;
-            }
-        }
-
-        log.debug("2(g) Fee Total : Provider {}, Total Fee {} " , Provider.QuickPay.name() ,totalFee);
-
-        return fee;
-    }
-
-    @Override
-    public int getNumberOfTransactions(Transaction transaction) {
-        calculateFee(transaction);
-        if (calculateFee(transaction) > 0) {
-            totalTransactionValue += 1;
-            log.debug("2(F) Transactions Total : Provider {},  Transactions Total {} " , Provider.QuickPay.name() , totalTransactionValue);
 
         }
-        return totalTransactionValue;
+        log.info("Transaction Amount : {} , Transaction Country : {} , Provider Name : {}, Provider Fee : {} " , transaction.getTransactionAmount(),transaction.getCountry().getName(), Provider.QuickPay ,providerFee);
+
+        return providerFee;
     }
+
 }
+

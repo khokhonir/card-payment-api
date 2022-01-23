@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Orange Card Orders</title>
+    <title>Providers</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link th:href="@{/styles/main.css}" rel="stylesheet" />
 </head>
@@ -11,13 +11,13 @@
     <table class="glyphicon glyphicon-calendar">
         <tr>
             <th>Provider</th>
-            <th>Total Fee (In Rands)</th>
-            <th>Number Of Transactions</th>
+            <th>Provider Fee (In $)</th>
+            <th>Provider Total</th>
         </tr>
-        <tr th:each="provider : ${providerLists}">
-            <td th:text="${provider.provider}"></td>
-            <td th:text="${provider.totalFee}"></td>
-            <td th:text="${provider.numberOfTransactions}"></td>
+        <tr th:each="providers : ${providerLists}">
+            <td th:text="${providers.getProvider()}"></td>
+            <td th:text="${providers.getTotalFee()}"></td>
+            <td th:text="${providers.getNumberOfTransactions()}"></td>
 
         </tr>
     </table>

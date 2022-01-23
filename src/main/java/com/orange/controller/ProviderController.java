@@ -1,7 +1,7 @@
 package com.orange.controller;
 
-import com.orange.model.OrangePayment;
 import com.orange.model.ProviderResult;
+import com.orange.model.TransactionResult;
 import com.orange.service.ProviderResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,11 +29,7 @@ public class ProviderController {
         return model;
     }
 
-    //Postman testing
-    @GetMapping(value = "/providers")
-    public List<ProviderResult> getProviderResults() {
-        return providerResultsService.getProviderResults();
-    }
+
 
 }
 

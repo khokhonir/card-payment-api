@@ -1,13 +1,10 @@
 package com.orange.service;
 
-import com.orange.model.OrangePayment;
-import com.orange.model.ProviderResult;
+import com.orange.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.text.NumberFormat;
-import java.util.List;
 import java.util.Locale;
 
 @Slf4j
@@ -15,39 +12,39 @@ import java.util.Locale;
 public class OrangePaymentServiceImpl implements OrangePaymentService {
 
     @Autowired
-    ProviderResultServiceImpl providerResultServiceImpl;
+    private TransactionResultServiceImpl transactionResultServiceImpl;
+
+    private OrangePayment orangePayment;
+    private long totalValueOfAllTransactions = 0;
+    private double generatedRevenue = 0.00;
+    private Locale zarLocale;
+    private NumberFormat zarFormat;
+
 
     @Override
     public OrangePayment setOrangePaymentResults() {
 
-        OrangePayment orangePayment = new OrangePayment();
+        orangePayment = new OrangePayment();
 
-        int totalValueOfAllTransactions = 0;
-        double generatedRevenue = 0.00;
-        double revenuePaidToProviders = 0.00;
+        double sumLeastProviderFee = transactionResultServiceImpl.getTransactionResults().stream().filter(o -> o.getStatus().equals(TransactionStatus.Success)).mapToDouble(TransactionResult::getTransactionFee).sum();
 
-        final Locale zarLocale;
-        final NumberFormat zarFormat;
+        totalValueOfAllTransactions  = transactionResultServiceImpl.getTransactionResults().stream().filter(o -> o.getStatus().equals(TransactionStatus.Success)).count();
 
+        for( TransactionResult transactionResult : transactionResultServiceImpl.getTransactionResults()){
+            if( transactionResult.getStatus() == TransactionStatus.Success){
+               generatedRevenue = generatedRevenue +  transactionResult.getTransaction().getTransactionAmount();
+            }
+        }
 
-        List<ProviderResult> providerResultsList = providerResultServiceImpl.getProviderResults();
-        totalValueOfAllTransactions  = providerResultsList.stream().mapToInt(x -> x.getNumberOfTransactions()).sum();
-        generatedRevenue = providerResultsList.stream().filter(o -> o.getTotalFee() > 0).mapToDouble(ProviderResult::getTotalFee).sum();
-
-        // ZAR
-        zarLocale = new Locale("en","ZA");
+        // Add the dollar sigh in the totals
+        zarLocale = new Locale("EN","US");
         zarFormat = NumberFormat.getCurrencyInstance(zarLocale);
-
-        //Orange flat fee for all card transactions
-        revenuePaidToProviders  = generatedRevenue;
         generatedRevenue = generatedRevenue * 0.045;
 
-
-        log.debug("The formated generated revenue is : " + zarFormat.format(generatedRevenue));
-
+        log.info("The formated generated revenue is : " + zarFormat.format(generatedRevenue));
         orangePayment.setTotalValueOfAllTransactions(String.format("%d",totalValueOfAllTransactions));
         orangePayment.setGeneratedRevenue(zarFormat.format(generatedRevenue)); //Orange flat fee for all card transactions
-        orangePayment.setCashPaidToProviders(zarFormat.format(revenuePaidToProviders));
+        orangePayment.setCashPaidToProviders(zarFormat.format(sumLeastProviderFee));
 
         return orangePayment;
     }

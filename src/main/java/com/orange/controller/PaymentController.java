@@ -28,10 +28,9 @@ public class PaymentController {
     @GetMapping("/getpayments")
     public ModelAndView providerList() {
 
-
         orangePayment = orangePaymentService.setOrangePaymentResults();
         model.addObject("revenue", orangePayment.getGeneratedRevenue());
-        model.addObject("transactionsTotal", "320");
+        model.addObject("transactionsTotal", orangePayment.getTotalValueOfAllTransactions());
         model.addObject("providersFees", orangePayment.getCashPaidToProviders());
         model.setViewName("payment_list");
         return model;
