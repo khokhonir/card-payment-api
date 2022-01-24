@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-//mark class as Controller
 
-@Controller
 @RestController
 public class ProviderController {
 

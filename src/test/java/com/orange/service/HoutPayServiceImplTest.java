@@ -17,7 +17,7 @@ public class HoutPayServiceImplTest {
     HoutPayServiceImpl houtPayServiceImpl;
 
     @Test
-    void calculateFee(){
+    void calculateTransaction1(){
 
         Transaction transaction = new Transaction(1l, CardType.HoutPay, Country.southAfrica(), 300);
 
@@ -26,6 +26,51 @@ public class HoutPayServiceImplTest {
         assertEquals( fee, 6);
 
     }
+
+    @Test
+    void calculateTransaction2(){
+
+        Transaction transaction = new Transaction(1l, CardType.MasterCard, Country.india(), 1000);
+
+        double fee = houtPayServiceImpl.calculateTransactionFee(transaction);
+
+        assertEquals( fee, 35);
+
+    }
+
+    @Test
+    void calculateTransaction3(){
+
+        Transaction transaction = new Transaction(1l, CardType.Visa, Country.india(), 500);
+
+        double fee = houtPayServiceImpl.calculateTransactionFee(transaction);
+
+        assertEquals( fee, 17.5);
+
+    }
+
+    @Test
+    void calculateTransaction4(){
+
+        Transaction transaction = new Transaction(1l, CardType.MasterCard, Country.houtBay(), 1399);
+
+        double fee = houtPayServiceImpl.calculateTransactionFee(transaction);
+
+        assertEquals( fee, 48.965);
+
+    }
+
+    @Test
+    void calculateTransaction5(){
+
+        Transaction transaction = new Transaction(1l, CardType.DinersClub, Country.uk(), 4000);
+
+        double fee = houtPayServiceImpl.calculateTransactionFee(transaction);
+
+        assertEquals( fee, 140.0);
+
+    }
+
 
 
 

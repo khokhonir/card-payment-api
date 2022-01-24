@@ -4,10 +4,9 @@ import com.orange.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
 
 @Slf4j
 @Service
@@ -15,12 +14,6 @@ public class ProviderResultsServiceImpl implements ProviderResultService {
 
     @Autowired
     private TransactionResultServiceImpl transactionResultServiceImpl;
-
-    private ProviderResult providerResult;
-    private long totalValueOfAllTransactions = 0;
-    private double generatedRevenue = 0.00;
-    private Locale zarLocale;
-    private NumberFormat zarFormat;
 
 
     @Override
