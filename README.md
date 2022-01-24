@@ -1,6 +1,6 @@
 # Orange card payment system
 
-###1. Build and run the Docker image
+### 1. Build and run the Docker image
 
 #### 1.1 Download docker and install docker
 
@@ -10,11 +10,10 @@
 * docker build -t card-payments -f Dockerfile .
 * docker run -p 8080:8080 -t card-payments
 * Go to the browser and type:
-** http:\\localhost:8080\gettransactions
-** http:\\localhost:8080\getproviders
-** http:\\localhost:8080\getpayments
-** http:\\localhost:8080\getorders
-
+  * http:\\localhost:8080\gettransactions
+  * http:\\localhost:8080\getproviders
+  * http:\\localhost:8080\getpayments
+  * http:\\localhost:8080\getorders
 
 #### 1.3 Build and run the application in your local  machine
 
